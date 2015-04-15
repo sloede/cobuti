@@ -1,0 +1,1 @@
+$src/pcre-8.34/configure --prefix=$pool/pcre-8.34

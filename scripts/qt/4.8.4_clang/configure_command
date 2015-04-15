@@ -1,0 +1,1 @@
+CC=clang CXX=clang++ QMAKE_CC=clang QMAKE_CXX=clang++ $src/qt-4.8.4/configure --prefix=$pool/qt-4.8.4_clang --opensource

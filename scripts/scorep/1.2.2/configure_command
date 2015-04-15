@@ -1,0 +1,1 @@
+$src/scorep-1.2.2/configure --with-otf2=$pool/otf2-1.2.1/bin --with-opari2=$pool/opari2-1.1.1/bin --with-cube=$pool/cube-4.2.1 --prefix=$pool/scorep-1.2.2

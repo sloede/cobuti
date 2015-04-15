@@ -1,0 +1,1 @@
+$src/opari2-1.1.1/configure --prefix=$pool/opari2-1.1.1

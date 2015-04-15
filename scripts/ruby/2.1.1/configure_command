@@ -1,0 +1,1 @@
+./configure --prefix=$pool/ruby-2.1.1

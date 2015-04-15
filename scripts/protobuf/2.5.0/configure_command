@@ -1,0 +1,1 @@
+$src/protobuf-2.5.0/configure --prefix=$pool/protobuf-2.5.0
