@@ -1,0 +1,68 @@
+#!/bin/bash
+
+PYTHON27=$pool/python-2.7.6
+MESA=$pool/mesa/20150415-3cbefe3
+GLU=$pool/glu/9.0.0
+
+if [ -z "$1" ]; then
+  PV_SRC=$src/ParaView
+else
+  PV_SRC="$1"
+fi
+
+if [ -z "$2" ]; then
+  PREFIX="$pool/ParaView_`date +%Y%m%d`"
+else
+  PREFIX="$2"
+fi
+
+if [ "$3" = "mesa" ]; then
+  USE_MESA=1
+else
+  USE_MESA=0
+fi
+
+# Build proper prefix if src is git repository
+if [ -d $PV_SRC/.git ]; then
+  cur_date=`date +%Y%m%d`
+  hash=`cd $PV_SRC && git rev-parse --short HEAD`
+  PREFIX=`echo "$PREFIX" | sed "s/@date@/$cur_date/g;s/@hash@/$hash/g"`
+fi
+
+echo "PREFIX: $PREFIX"
+echo
+echo "Running CMake..."
+
+if [ $USE_MESA -eq 1 ]; then
+  set -x
+  CC=gcc CXX=g++ cmake $PV_SRC \
+    -DBUILD_DOCUMENTATION:BOOL=ON \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    -DCMAKE_BUILD_TYPE:STRING=Release \
+    -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
+    -DPARAVIEW_ENABLE_PYTHON:BOOL=ON \
+    -DPARAVIEW_INSTALL_DEVELOPMENT_FILES:BOOL=ON \
+    -DPARAVIEW_USE_MPI:BOOL=ON \
+    -DPYTHON_LIBRARY:FILEPATH=$PYTHON27/lib/libpython2.7.so \
+    -DPYTHON_INCLUDE_DIR:PATH=$PYTHON27/include/python2.7 \
+    -DPARAVIEW_BUILD_QT_GUI:BOOL=OFF \
+    -DVTK_USE_X:BOOL=OFF \
+    -DOPENGL_INCLUDE_DIR:PATH=$MESA/include \
+    -DOPENGL_gl_LIBRARY:FILEPATH=$MESA/lib/libOSMesa.so \
+    -DOPENGL_glu_LIBRARY:FILEPATH=$GLU/lib/libGLU.so \
+    -DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
+    -DOSMESA_INCLUDE_DIR:PATH=$MESA/include \
+    -DOSMESA_LIBRARY:FILEPATH=$MESA/lib/libOSMesa.so
+else
+  set -x
+  CC=gcc CXX=g++ cmake $PV_SRC \
+    -DBUILD_DOCUMENTATION:BOOL=ON \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    -DCMAKE_BUILD_TYPE:STRING=Release \
+    -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
+    -DPARAVIEW_ENABLE_PYTHON:BOOL=ON \
+    -DPARAVIEW_INSTALL_DEVELOPMENT_FILES:BOOL=ON \
+    -DPARAVIEW_USE_MPI:BOOL=ON \
+    -DPYTHON_LIBRARY:FILEPATH=$PYTHON27/lib/libpython2.7.so \
+    -DPYTHON_INCLUDE_DIR:PATH=$PYTHON27/include/python2.7
+fi
