@@ -1,0 +1,1 @@
+$src/binutils-2.23.2/configure --prefix=$pool/binutils-2.23.2_gold --enable-gold --enable-plugins

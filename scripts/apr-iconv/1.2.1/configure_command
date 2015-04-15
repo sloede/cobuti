@@ -1,0 +1,1 @@
+./configure --prefix=$pool/apr-iconv-1.2.1 --with-apr=$pool/apr && make -j 8 && make install

@@ -1,0 +1,1 @@
+./configure --prefix=$pool/apr-1.4.6 && make -j 8 && make test && make install

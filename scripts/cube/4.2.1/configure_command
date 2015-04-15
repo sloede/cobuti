@@ -1,0 +1,1 @@
+$src/cube-4.2.1/configure --prefix=$pool/cube-4.2.1

@@ -1,0 +1,2 @@
+PATH="$PATH:$pool/pcre-8.34/bin" make SRCDIR=build CFGDIR=/home/mic/.pool/cppcheck-1.63/cfg HAVE_RULES=yes LDFLAGS="-Wl,-rpath,$pool/pcre-8.34/lib" DESTDIR=$pool/cppcheck-1.63 -j 8 install
+cp -R cfg/ /home/mic/.pool/cppcheck-1.63/

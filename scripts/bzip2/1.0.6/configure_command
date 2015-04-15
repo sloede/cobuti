@@ -1,0 +1,1 @@
+add -fPIC to CFLAGS, make, make install PREFIX=

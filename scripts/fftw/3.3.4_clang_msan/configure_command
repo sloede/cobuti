@@ -1,0 +1,1 @@
+CC=clang CXX=clang++ CFLAGS="-fsanitize=memory -O1" $src/fftw-3.3.4/configure --prefix=$pool/fftw/3.3.4_clang_msan

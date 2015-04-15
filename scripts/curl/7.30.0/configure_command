@@ -1,0 +1,1 @@
+/home/mic/.pool/.src/curl-7.30.0/configure --prefix=/home/mic/.pool/curl-7.30.0 --with-ssl --with-libssh2=/home/mic/.pool/libssh2
