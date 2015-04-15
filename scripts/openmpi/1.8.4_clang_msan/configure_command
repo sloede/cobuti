@@ -1,0 +1,1 @@
+ulimit -v unlimited; printf "fun:opal_class_initialize\nfun:opal_atomic_lock\n" > blacklist.txt && CC=clang CXX=clang++ CXXFLAGS="-fsanitize=memory -O1 -fsanitize-blacklist=`pwd`/blacklist.txt" CFLAGS="-fsanitize=memory -O1 -fsanitize-blacklist=`pwd`/blacklist.txt" $src/openmpi-1.8.4/configure --prefix=$pool/openmpi/1.8.4_clang_msan --disable-mpi-fortran

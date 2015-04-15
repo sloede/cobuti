@@ -1,0 +1,1 @@
+CC=gcc CXX=g++ $src/mpich-3.0.4/configure --prefix=$pool/mpich-3.0.4 --disable-f70 --disable-fc

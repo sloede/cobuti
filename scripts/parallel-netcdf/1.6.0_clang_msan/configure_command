@@ -1,0 +1,1 @@
+ulimit -v unlimited; CC=clang CXX=clang++ CFLAGS="-fsanitize=memory -O1" $src/parallel-netcdf-1.6.0/configure --prefix=$pool/parallel-netcdf/1.6.0_clang_msan --with-mpi=$pool/openmpi/1.8.4_clang_msan --disable-fortran

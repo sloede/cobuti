@@ -1,0 +1,1 @@
+LDFLAGS="-L$pool/python-2.7.6/lib" $src/libxslt-1.1.28/configure --with-python=$pool/python-2.7.6 --with-libxml-prefix=$pool/libxml2-2.9.1 --prefix=$pool/libxslt-1.1.28

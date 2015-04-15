@@ -1,0 +1,1 @@
+$src/gmp-5.1.1/configure --prefix=$pool/gmp-5.1.1

@@ -1,0 +1,1 @@
+PATH=$PATH:$pool/protobuf/bin protobuf_CFLAGS=-I$pool/protobuf/include protobuf_LIBS=-lprotobuf LDFLAGS=-L$pool/protobuf/lib $src/mosh-1.2.4/configure --prefix=$pool/mosh-1.2.4

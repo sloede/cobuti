@@ -1,0 +1,1 @@
+$src/gdc/gcc/configure --with-bugurl="http://bugzilla.gdcproject.org" --enable-languages=d --prefix=$pool/gdc-20140404-2d4dd77

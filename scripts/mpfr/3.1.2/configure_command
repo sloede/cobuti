@@ -1,0 +1,1 @@
+$src/mpfr-3.1.2/configure --prefix=$pool/mpfr-3.1.2 --with-gmp=$pool/gmp-5.1.1

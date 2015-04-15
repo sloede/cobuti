@@ -1,0 +1,1 @@
+$src/ncurses-5.9/configure --prefix=$pool/ncurses-5.9 CFLAGS=-fPIC

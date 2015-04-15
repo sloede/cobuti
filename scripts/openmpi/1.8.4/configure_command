@@ -1,0 +1,1 @@
+$src/openmpi-1.8.4/configure --prefix=$pool/openmpi/1.8.4 --enable-mpi-fortran

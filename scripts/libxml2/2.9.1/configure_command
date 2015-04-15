@@ -1,0 +1,1 @@
+$src/libxml2-2.9.1/configure --with-python=$pool/python-2.7.6 --prefix=$pool/libxml2-2.9.1

@@ -1,0 +1,1 @@
+$src/parallel-netcdf-1.6.0/configure --prefix=$pool/parallel-netcdf/1.6.0_ompi184 --with-mpi=$pool/openmpi/1.8.4
