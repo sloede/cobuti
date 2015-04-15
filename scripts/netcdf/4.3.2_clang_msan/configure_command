@@ -1,0 +1,1 @@
+ulimit -v unlimited; CC=clang CXX=clang++ CFLAGS="-fsanitize=memory -O1" $src/netcdf-4.3.2/configure --prefix=$pool/netcdf/4.3.2_clang_msan --disable-dap

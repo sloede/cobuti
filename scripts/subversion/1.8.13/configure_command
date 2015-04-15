@@ -1,0 +1,1 @@
+$src/subversion-1.8.13/configure --with-apr=$pool/apr --with-apr-util=$pool/apr-util --with-sqlite=$pool/sqlite --with-serf=$pool/serf --prefix=$pool/subversion/1.8.13

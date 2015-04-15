@@ -1,0 +1,1 @@
+./configure --prefix=/home/mic/.pool/git-1.8.2.2 --with-curl=/home/mic/.pool/curl --with-expat=/home/mic/.pool/expat

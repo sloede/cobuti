@@ -1,0 +1,4 @@
+make configure
+./configure --prefix=$pool/git/2.3.4 --with-curl=/home/mic/.pool/curl --with-expat=/home/mic/.pool/expat
+make all
+make install
