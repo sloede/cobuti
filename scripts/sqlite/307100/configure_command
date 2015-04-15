@@ -1,0 +1,1 @@
+./configure --prefix=$pool/sqlite-3071700

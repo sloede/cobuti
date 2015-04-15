@@ -1,0 +1,1 @@
+./configure --prefix=$pool/swig-3.0.0 --with-python=$pool/python-2.7.6/bin/python --with-python3=$pool/python-3.4.0/bin/python3 --with-pcre-prefix=$pool/pcre-8.34

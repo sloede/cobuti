@@ -1,0 +1,3 @@
+./configure --with-features=huge --enable-pythoninterp --with-python-config-dir=$pool/python-2.7.4/lib/python2.7/config --enable-perlinterp --enable-gui=gtk2 --enable-cscope --prefix=$pool/vim74 --enable-luainterp
+make VIMRUNTIMEDIR=$pool/vim/share/vim/vim74
+make install

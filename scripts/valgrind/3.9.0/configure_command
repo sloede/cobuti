@@ -1,0 +1,1 @@
+CC=/home/mic/.pool/gcc-4.8.2/bin/gcc CXX=/home/mic/.pool/gcc-4.8.2/bin/g++ LDFLAGS=-Wl,-rpath,/home/mic/.pool/gcc-4.8.2/lib64 ./configure --prefix=$pool/valgrind-3.9.0 

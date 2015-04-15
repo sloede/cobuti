@@ -1,0 +1,1 @@
+$src/tcl8.6.1/unix/configure --enable-threads --prefix=$pool/tcl8.6.1

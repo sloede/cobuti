@@ -1,0 +1,1 @@
+$src/xz-5.0.5/configure --prefix=$pool/xz-5.0.5

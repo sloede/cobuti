@@ -1,0 +1,1 @@
+LDFLAGS="-L$pool/expat/lib" ./configure --prefix=$pool/serf-1.2.1 --with-apr=$pool/apr && make -j 8 && make install

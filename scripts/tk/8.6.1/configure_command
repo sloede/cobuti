@@ -1,0 +1,1 @@
+$src/tk8.6.1/unix/configure --with-tcl=$pool/tcl8.6.1/lib --prefix=$pool/tk8.6.1 --enable-64bit --with-x
