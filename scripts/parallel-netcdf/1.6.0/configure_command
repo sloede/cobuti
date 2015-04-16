@@ -1,1 +1,4 @@
-$src/parallel-netcdf-1.6.0/configure --prefix=$pool/parallel-netcdf/1.6.0 --with-mpi=/pds/opt/openmpi-1.6
+# Old command
+# $src/parallel-netcdf-1.6.0/configure --prefix=$pool/parallel-netcdf/1.6.0 --with-mpi=/pds/opt/openmpi-1.6
+# New command (with -fPIC to allow linking from shared libraries)
+CFLAGS=-fPIC CXXFLAGS=-fPIC $src/parallel-netcdf-1.6.0/configure --prefix=$pool/parallel-netcdf/1.6.0 --with-mpi=/pds/opt/openmpi-1.6
