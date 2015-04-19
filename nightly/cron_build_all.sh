@@ -1,9 +1,9 @@
 #!/bin/bash
 
-SCRIPT_DIR=/home/mic/Code/Helpers/autobuild
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-# for b in clang libcxx gcc; do
-for b in clang libcxx; do
+# for b in llvm libcxx gcc; do
+for b in llvm libcxx; do
   fn="/tmp/build_nightly_${b}.`date '+%A' | awk '{print tolower($0)}'`"
   touch $fn
   $SCRIPT_DIR/build_nightly_$b &> $fn
