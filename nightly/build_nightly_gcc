@@ -1,0 +1,119 @@
+#!/bin/bash
+
+POOL=/home/mic/.pool
+GCC_BUILD_DIR=$POOL/.build/gcc
+GCC_SRC_DIR=$POOL/.src/gcc
+GCC_INSTALL_PREFIX=$POOL/gcc_r
+GCC_NIGHTLY_DIR=$POOL/gcc_nightly
+GCC_WEEKLY_DIR=${GCC_NIGHTLY_DIR}_`date '+%A' | awk '{print tolower($0)}'`
+
+SVN=$POOL/subversion-1.8.4/bin/svn
+
+# Update path and library path
+echo "################################################################################"
+echo "UPDATE PATH/LD_LIBRARY_PATH"
+echo "################################################################################"
+export PATH="/home/mic/.pool/gcc-4.8.2/bin:/home/mic/.pool/binutils-2.23.2/bin:$PATH"
+export LD_LIBRARY_PATH="/home/mic/.pool/gcc-4.8.2/lib64:$LD_LIBRARY_PATH"
+echo "PATH: $PATH"
+echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+
+# Update GCC
+echo
+echo "################################################################################"
+echo "UPDATE SOURCE"
+echo "################################################################################"
+(cd $GCC_SRC_DIR && $SVN update)
+if [ $? -ne 0 ]; then
+  echo "*** ERROR: An error occurred while updating the sources."
+  exit 2
+fi
+
+# Delete and (re)create build dir
+echo
+echo "################################################################################"
+echo "RECREATE BUILD DIR"
+echo "################################################################################"
+echo "Build dir: $GCC_BUILD_DIR"
+rm -rf "$GCC_BUILD_DIR"
+[ ! -d "$GCC_BUILD_DIR" ] && mkdir "$GCC_BUILD_DIR"
+if [ $? -ne 0 ]; then
+  echo "*** ERROR: An error occurred while recreating the build directory."
+  exit 2
+fi
+
+# Determine revision
+echo
+echo "################################################################################"
+echo "DETERMINE REVISION"
+echo "################################################################################"
+rev=`$SVN info $GCC_SRC_DIR | grep Revision | awk '{print $2}'`
+if [ $? -ne 0 ]; then
+  echo "*** ERROR: An error occurred while determining the current svn revision."
+  exit 2
+fi
+gcc_install_dir=$GCC_INSTALL_PREFIX$rev
+echo "Revision: $rev"
+echo "Install dir: $gcc_install_dir"
+if [ -d "$gcc_install_dir" ]; then
+  echo "Clang is up to date, nothing to do."
+  exit 0
+fi
+
+# Configure
+echo
+echo "################################################################################"
+echo "CONFIGURE"
+echo "################################################################################"
+configure_command="$GCC_SRC_DIR/configure --prefix=$gcc_install_dir"
+echo "$configure_command"
+(
+cd $GCC_BUILD_DIR
+$configure_command
+)
+if [ $? -ne 0 ]; then
+  echo "*** ERROR: An error occurred during configure."
+  exit 2
+fi
+
+# Build & install
+echo
+echo "################################################################################"
+echo "BUILD & INSTALL"
+echo "################################################################################"
+(cd $GCC_BUILD_DIR && make -j 8 && make install)
+if [ $? -ne 0 ]; then
+  echo "*** ERROR: An error occurred during make && make install."
+  exit 2
+fi
+
+# Delete old weekly version
+echo
+echo "################################################################################"
+echo "DELETE PREVIOUS WEEKLY VERSION"
+echo "################################################################################"
+if [ -d "$GCC_WEEKLY_DIR" ]; then
+  weekly=`cd $GCC_WEEKLY_DIR; pwd -P`
+  rm -rf $weekly
+  echo "rm -rf $weekly"
+else
+  echo "Nothing to delete."
+fi
+
+# Recreate weekly dir
+echo
+echo "################################################################################"
+echo "RECREATE WEEKLY VERSION DIR"
+echo "################################################################################"
+[ -L "$GCC_WEEKLY_DIR" ] && rm $GCC_WEEKLY_DIR
+ln -s $gcc_install_dir $GCC_WEEKLY_DIR
+echo "Recreated $GCC_WEEKLY_DIR (link to $gcc_install_dir)."
+
+# Recreate nightly dir
+echo
+echo "################################################################################"
+echo "RECREATE NIGHTLY VERSION DIR"
+echo "################################################################################"
+[ -L "$GCC_NIGHTLY_DIR" ] && rm $GCC_NIGHTLY_DIR
+ln -s $gcc_install_dir $GCC_NIGHTLY_DIR
+echo "Recreated $GCC_NIGHTLY_DIR (link to $gcc_install_dir)."

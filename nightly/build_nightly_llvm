@@ -1,0 +1,108 @@
+#!/bin/bash
+
+POOL=/home/mic/.pool
+LLVM_BUILD_DIR=$POOL/.build/.llvm_nightly_`date "+%Y%m%d"`
+LLVM_SRC_DIR=$POOL/.src/llvm
+LLVM_PREFIX_BASE=$POOL/llvm
+LLVM_NIGHTLY_DIR=$POOL/llvm/nightly
+LLVM_OLD_NIGHTLY_DIRS=$HOME/scratch/.old_nightly/llvm
+KEEP_OLD_NIGHTLY=10
+PYTHON_EXEC=/home/mic/.pool/python-2.7.6/bin/python
+
+# Execute command with parameters and quit if it failed
+exec_or_die() {
+  eval $*
+  if [ $? -ne 0 ]; then
+    echo "error in file $0, line ${BASH_LINENO[0]}: failed to execute '$@'" >&2
+    exit 1
+  fi
+}
+
+# List svn directories recursively (blatantly stolen from LLVM Makefile)
+svnup() {
+  dirs=`svn status --no-ignore $1 | awk '/^(I|\?) / {print $2}' \
+      | LC_ALL=C xargs svn info 2>/dev/null | awk '/^Path:\ / {print $2}'`;
+  if [ "$dirs" = "" ]; then
+    return;
+  fi;
+  for f in $dirs; do
+    echo $f;
+    svnup $f;
+  done
+}
+
+# Mark beginning
+date
+
+echo "################################################################################"
+echo "Updating svn sources..."
+echo "################################################################################"
+echo
+exec_or_die svn update $LLVM_SRC_DIR
+exec_or_die svnup $LLVM_SRC_DIR | xargs svn update
+
+echo
+echo "################################################################################"
+echo "Determining revision..."
+echo "################################################################################"
+rev=`svn info $LLVM_SRC_DIR | awk '/^Revision/ {print $2}'`
+if echo $rev | grep -vq '^[0-9][0-9]*$'; then
+  echo "error: bad revision number: $rev" >&2
+  exit 1
+fi
+echo "Revision: $rev"
+llvm_install_dir=$LLVM_PREFIX_BASE/`date "+%Y%m%d"`-r$rev
+echo "Install dir: $llvm_install_dir"
+if [ -d "$llvm_install_dir" ]; then
+  echo "Clang is up to date, nothing to do."
+  exit 0
+fi
+
+echo
+echo "################################################################################"
+echo "Recreating build dir..."
+echo "################################################################################"
+echo "Build dir: $LLVM_BUILD_DIR"
+exec_or_die rm -rf "$LLVM_BUILD_DIR"
+exec_or_die mkdir -p "$LLVM_BUILD_DIR"
+
+echo
+echo "################################################################################"
+echo "Running configure..."
+echo "################################################################################"
+cmd="CC=gcc CXX=g++ $LLVM_SRC_DIR/configure --prefix=$llvm_install_dir \
+    --enable-optimized --with-python=$PYTHON_EXEC"
+echo "Configure command: $cmd"
+exec_or_die pushd $LLVM_BUILD_DIR
+exec_or_die $cmd
+exec_or_die popd
+
+echo
+echo "################################################################################"
+echo "Building and installing..."
+echo "################################################################################"
+exec_or_die pushd $LLVM_BUILD_DIR
+exec_or_die make -j 10
+exec_or_die make install
+exec_or_die popd
+exec_or_die rm -rf "$LLVM_BUILD_DIR"
+
+echo
+echo "################################################################################"
+echo "Resetting nightly version..."
+echo "################################################################################"
+old_nightly_dir=$([ -d $LLVM_NIGHTLY_DIR ] && cd $LLVM_NIGHTLY_DIR && pwd -P)
+echo "Old nightly install: $old_nightly_dir"
+exec_or_die rm -f $LLVM_NIGHTLY_DIR
+exec_or_die ln -s $llvm_install_dir $LLVM_NIGHTLY_DIR
+
+echo
+echo "################################################################################"
+echo "Cleaning up old nightly installs..."
+echo "################################################################################"
+[ -d "$old_nightly_dir" ] && mv $old_nightly_dir $LLVM_OLD_NIGHTLY_DIRS
+exec_or_die find $LLVM_OLD_NIGHTLY_DIRS -mindepth 1 -maxdepth 1 | sort \
+    | head -n -$KEEP_OLD_NIGHTLY | xargs rm -rf
+
+# Mark end
+date
