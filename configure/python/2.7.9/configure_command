@@ -1,0 +1,1 @@
+$src/Python-2.7.9/configure --enable-profiling --enable-shared LDFLAGS="-L$pool/sqlite/autoconf-3080900/lib -Wl,-rpath,$pool/python/2.7.9/lib" --prefix=$pool/python/2.7.9
