@@ -1,0 +1,1 @@
+CC=/bgsys/local/clang/r236977-20150511/bin/bgclang CXX=/bgsys/local/clang/r236977-20150511/bin/bgclang++ MPICC=/bgsys/local/clang/r236977-20150511/mpi/bgclang/bin/mpicc MPICXX=/bgsys/local/clang/r236977-20150511/mpi/bgclang/bin/mpicxx $src/parallel-netcdf-1.6.0/configure --prefix=/bgsys/local/parallel-netcdf/v1.6.0_bgclang
