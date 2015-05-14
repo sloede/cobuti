@@ -1,0 +1,1 @@
+CC=/bgsys/local/clang/r236977-20150511/bin/bgclang CXX=/bgsys/local/clang/r236977-20150511/bin/bgclang++ $src/netcdf-4.3.3.1/configure --prefix=/bgsys/local/netcdf/v4.3.3.1_bgclang --disable-netcdf-4 --enable-shared=no
