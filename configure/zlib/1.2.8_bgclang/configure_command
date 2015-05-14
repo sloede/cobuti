@@ -1,0 +1,1 @@
+CC=bgclang ./configure --prefix=/homec/jhpc05/jhpc0501/.pool/zlib-1.2.8_clang --static

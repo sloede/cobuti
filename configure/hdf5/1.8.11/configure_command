@@ -1,0 +1,1 @@
+CC=mpiclang $src/hdf5-1.8.11/configure --prefix=$pool/hdf5-1.8.11_clang --enable-parallel --with-zlib=$pool/zlib_clang --with-szlib=$pool/szip_clang
