@@ -57,6 +57,7 @@ echo "##########################################################################
 cmd="cmake -G \"Unix Makefiles\" \
     -DCMAKE_C_COMPILER=gcc \
     -DCMAKE_CXX_COMPILER=g++ \
+    -DCMAKE_INSTALL_PREFIX=$llvm_omp_install_dir \
     $LLVM_OMP_SRC_DIR"
 echo "Configure command: $cmd"
 exec_or_die pushd $LLVM_OMP_BUILD_DIR
