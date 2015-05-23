@@ -1,11 +1,11 @@
 #!/bin/bash
 
 POOL=/home/mic/.pool
-LIBCXX_BUILD_DIR=$POOL/.build/.libcxx_nightly_`date "+%Y%m%d"`
-LIBCXX_SRC_DIR=$POOL/.src/libcxx
-LIBCXX_PREFIX_BASE=$POOL/libcxx
-LIBCXX_NIGHTLY_DIR=$POOL/libcxx/nightly
-LIBCXX_OLD_NIGHTLY_DIRS=$HOME/scratch/.old_nightly/libcxx
+LLVM_OMP_BUILD_DIR=$POOL/.build/.libcxx_nightly_`date "+%Y%m%d"`
+LLVM_OMP_SRC_DIR=$POOL/.src/libcxx
+LLVM_OMP_PREFIX_BASE=$POOL/libcxx
+LLVM_OMP_NIGHTLY_DIR=$POOL/libcxx/nightly
+LLVM_OMP_OLD_NIGHTLY_DIRS=$HOME/scratch/.old_nightly/libcxx
 KEEP_OLD_NIGHTLY=10
 
 GCC_VER=`g++ --version | awk '/^g++/ {print $3}'`
@@ -27,19 +27,19 @@ date
 echo "################################################################################"
 echo "Updating svn sources..."
 echo "################################################################################"
-exec_or_die svn update $LIBCXX_SRC_DIR
+exec_or_die svn update $LLVM_OMP_SRC_DIR
 
 echo
 echo "################################################################################"
 echo "Determining revision..."
 echo "################################################################################"
-rev=`svn info $LIBCXX_SRC_DIR | awk '/^Revision/ {print $2}'`
+rev=`svn info $LLVM_OMP_SRC_DIR | awk '/^Revision/ {print $2}'`
 if echo $rev | grep -vq '^[0-9][0-9]*$'; then
   echo "error: bad revision number: $rev" >&2
   exit 1
 fi
 echo "Revision: $rev"
-libcxx_install_dir=$LIBCXX_PREFIX_BASE/`date "+%Y%m%d"`-r$rev
+libcxx_install_dir=$LLVM_OMP_PREFIX_BASE/`date "+%Y%m%d"`-r$rev
 echo "Install dir: $libcxx_install_dir"
 if [ -d "$libcxx_install_dir" ]; then
   echo "Libc++ is up to date, nothing to do."
@@ -50,21 +50,21 @@ echo
 echo "################################################################################"
 echo "Recreating build dir..."
 echo "################################################################################"
-echo "Build dir: $LIBCXX_BUILD_DIR"
-exec_or_die rm -rf "$LIBCXX_BUILD_DIR"
-exec_or_die mkdir -p "$LIBCXX_BUILD_DIR"
+echo "Build dir: $LLVM_OMP_BUILD_DIR"
+exec_or_die rm -rf "$LLVM_OMP_BUILD_DIR"
+exec_or_die mkdir -p "$LLVM_OMP_BUILD_DIR"
 
 echo
 echo "################################################################################"
 echo "Running configure..."
 echo "################################################################################"
 cmd="CC=clang CXX=clang++ cmake -G \"Unix Makefiles\" \
-    -DLIBCXX_CXX_ABI=libstdc++ \
-    -DLIBCXX_CXX_ABI_INCLUDE_PATHS=\"$LIBSUBCXX_INCLUDE_PATHS\" \
+    -DLLVM_OMP_CXX_ABI=libstdc++ \
+    -DLLVM_OMP_CXX_ABI_INCLUDE_PATHS=\"$LIBSUBCXX_INCLUDE_PATHS\" \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$libcxx_install_dir \
-    $LIBCXX_SRC_DIR"
+    $LLVM_OMP_SRC_DIR"
 echo "Configure command: $cmd"
-exec_or_die pushd $LIBCXX_BUILD_DIR
+exec_or_die pushd $LLVM_OMP_BUILD_DIR
 exec_or_die $cmd
 exec_or_die popd
 
@@ -72,29 +72,29 @@ echo
 echo "################################################################################"
 echo "Building and installing..."
 echo "################################################################################"
-exec_or_die pushd $LIBCXX_BUILD_DIR
+exec_or_die pushd $LLVM_OMP_BUILD_DIR
 exec_or_die make -j 10
 exec_or_die make install
 exec_or_die popd
-exec_or_die rm -rf "$LIBCXX_BUILD_DIR"
+exec_or_die rm -rf "$LLVM_OMP_BUILD_DIR"
 
 echo
 echo "################################################################################"
 echo "Resetting nightly version..."
 echo "################################################################################"
-old_nightly_dir=$([ -d $LIBCXX_NIGHTLY_DIR ] && cd $LIBCXX_NIGHTLY_DIR \
+old_nightly_dir=$([ -d $LLVM_OMP_NIGHTLY_DIR ] && cd $LLVM_OMP_NIGHTLY_DIR \
     && pwd -P)
 echo "Old nightly install: $old_nightly_dir"
-exec_or_die rm -f $LIBCXX_NIGHTLY_DIR
-exec_or_die ln -s $libcxx_install_dir $LIBCXX_NIGHTLY_DIR
+exec_or_die rm -f $LLVM_OMP_NIGHTLY_DIR
+exec_or_die ln -s $libcxx_install_dir $LLVM_OMP_NIGHTLY_DIR
 
 echo
 echo "################################################################################"
 echo "Cleaning up old nightly installs..."
 echo "################################################################################"
 exec_or_die [ -d "$old_nightly_dir" ] \
-    && mv $old_nightly_dir $LIBCXX_OLD_NIGHTLY_DIRS
-exec_or_die find $LIBCXX_OLD_NIGHTLY_DIRS -mindepth 1 -maxdepth 1 | sort \
+    && mv $old_nightly_dir $LLVM_OMP_OLD_NIGHTLY_DIRS
+exec_or_die find $LLVM_OMP_OLD_NIGHTLY_DIRS -mindepth 1 -maxdepth 1 | sort \
     | head -n -$KEEP_OLD_NIGHTLY | xargs rm -rf
 
 # Mark end
