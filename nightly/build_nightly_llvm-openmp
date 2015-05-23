@@ -8,10 +8,6 @@ LLVM_OMP_NIGHTLY_DIR=$POOL/llvm-openmp/nightly
 LLVM_OMP_OLD_NIGHTLY_DIRS=$HOME/scratch/.old_nightly/llvm-openmp
 KEEP_OLD_NIGHTLY=10
 
-GCC_VER=`g++ --version | awk '/^g++/ {print $3}'`
-GCC_INCLUDE_CXX=$(dirname $(which g++))/../include/c++/${GCC_VER}
-LIBSUBCXX_INCLUDE_PATHS="$GCC_INCLUDE_CXX;$GCC_INCLUDE_CXX/x86_64-unknown-linux-gnu"
-
 # Execute command with parameters and quit if it failed
 exec_or_die() {
   eval $*
@@ -42,7 +38,7 @@ echo "Revision: $rev"
 llvm_omp_install_dir=$LLVM_OMP_PREFIX_BASE/`date "+%Y%m%d"`-r$rev
 echo "Install dir: $llvm_omp_install_dir"
 if [ -d "$llvm_omp_install_dir" ]; then
-  echo "Libc++ is up to date, nothing to do."
+  echo "LLVM OpenMP is up to date, nothing to do."
   exit 0
 fi
 
@@ -58,10 +54,9 @@ echo
 echo "################################################################################"
 echo "Running configure..."
 echo "################################################################################"
-cmd="CC=clang CXX=clang++ cmake -G \"Unix Makefiles\" \
-    -DLLVM_OMP_CXX_ABI=libstdc++ \
-    -DLLVM_OMP_CXX_ABI_INCLUDE_PATHS=\"$LIBSUBCXX_INCLUDE_PATHS\" \
-    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$llvm_omp_install_dir \
+cmd="cmake -G \"Unix Makefiles\" \
+    -DCMAKE_C_COMPILER=gcc \
+    -DCMAKE_CXX_COMPILER=g++ \
     $LLVM_OMP_SRC_DIR"
 echo "Configure command: $cmd"
 exec_or_die pushd $LLVM_OMP_BUILD_DIR
@@ -73,7 +68,7 @@ echo "##########################################################################
 echo "Building and installing..."
 echo "################################################################################"
 exec_or_die pushd $LLVM_OMP_BUILD_DIR
-exec_or_die make -j 10
+exec_or_die make all common -j 10
 exec_or_die make install
 exec_or_die popd
 exec_or_die rm -rf "$LLVM_OMP_BUILD_DIR"
