@@ -1,11 +1,11 @@
 #!/bin/bash
 
 POOL=/home/mic/.pool
-LLVM_OMP_BUILD_DIR=$POOL/.build/.libcxx_nightly_`date "+%Y%m%d"`
-LLVM_OMP_SRC_DIR=$POOL/.src/libcxx
-LLVM_OMP_PREFIX_BASE=$POOL/libcxx
-LLVM_OMP_NIGHTLY_DIR=$POOL/libcxx/nightly
-LLVM_OMP_OLD_NIGHTLY_DIRS=$HOME/scratch/.old_nightly/libcxx
+LLVM_OMP_BUILD_DIR=$POOL/.build/.llvm-openmp_nightly_`date "+%Y%m%d"`
+LLVM_OMP_SRC_DIR=$POOL/.src/llvm-openmp
+LLVM_OMP_PREFIX_BASE=$POOL/llvm-openmp
+LLVM_OMP_NIGHTLY_DIR=$POOL/llvm-openmp/nightly
+LLVM_OMP_OLD_NIGHTLY_DIRS=$HOME/scratch/.old_nightly/llvm-openmp
 KEEP_OLD_NIGHTLY=10
 
 GCC_VER=`g++ --version | awk '/^g++/ {print $3}'`
