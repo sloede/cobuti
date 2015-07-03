@@ -1,9 +1,9 @@
 # Determine revision, date, directories
 REV=$(svn info http://llvm.org/svn/llvm-project/llvm/trunk | grep ^Revision: | awk '{print $2}')
 DATE=$(date "+%Y%m%d")
-SRC_DIR=/pds/opt/llvm-$DATE-$REV-src
-INSTALL_DIR=/pds/opt/llvm-$DATE-$REV
-BUILD_DIR=/pds/opt/llvm-$DATE-$REV-build
+SRC_DIR=/pds/opt/llvm-$DATE-r$REV-src
+INSTALL_DIR=/pds/opt/llvm-$DATE-r$REV
+BUILD_DIR=/pds/opt/llvm-$DATE-r$REV-build
 
 # Get LLVM + Clang
 # Get LLVM
