@@ -1,0 +1,30 @@
+# Determine revision, date, directories
+REV=$(svn info http://llvm.org/svn/llvm-project/llvm/trunk | grep ^Revision: | awk '{print $2}')
+DATE=$(date "+%Y%m%d")
+SRC_DIR=/pds/opt/llvm-$DATE-$REV-src
+INSTALL_DIR=/pds/opt/llvm-$DATE-$REV
+BUILD_DIR=/pds/opt/llvm-$DATE-$REV-build
+
+# Get LLVM + Clang
+# Get LLVM
+echo "Getting LLVM at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/llvm/trunk $SRC_DIR
+# Get clang
+echo "Getting Clang at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/cfe/trunk $SRC_DIR/tools/clang
+# Get extra clang tools
+echo "Getting Clang extra tools at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/clang-tools-extra/trunk $SRC_DIR/tools/clang/tools/extra
+# Get compiler-rt
+echo "Getting compiler-rt at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/compiler-rt/trunk $SRC_DIR/projects/compiler-rt
+
+# Build & install LLVM + Clang
+mkdir -p $BUILD_DIR
+cd $BUILD_DIR
+echo "Configuring LLVM..."
+CC=gcc CXX=g++ $SRC_DIR/configure --prefix=$INSTALL_DIR --enable-optimized --with-python
+echo "Building LLVM..."
+make && make install
+echo
+echo "Installation finished. Please remove build dir '$BUILD_DIR'."
