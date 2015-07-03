@@ -1,9 +1,9 @@
 # Determine revision, date, directories
 REV=$(svn info http://llvm.org/svn/llvm-project/libcxx/trunk | grep ^Revision: | awk '{print $2}')
 DATE=$(date "+%Y%m%d")
-SRC_DIR=/tmp/libcxx-$DATE-$REV-src
-INSTALL_DIR=/tmp/libcxx-$DATE-$REV
-BUILD_DIR=/tmp/libcxx-$DATE-$REV-build
+SRC_DIR=/pds/opt/libcxx-$DATE-$REV-src
+INSTALL_DIR=/pds/opt/libcxx-$DATE-$REV
+BUILD_DIR=/pds/opt/libcxx-$DATE-$REV-build
 
 # Get libcxx
 echo "Getting libcxx at revision $REV..."
