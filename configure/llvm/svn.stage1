@@ -1,9 +1,9 @@
 # Determine revision, date, directories
 REV=$(svn info http://llvm.org/svn/llvm-project/llvm/trunk | grep ^Revision: | awk '{print $2}')
 DATE=$(date "+%Y%m%d")
-SRC_DIR=/pds/opt/llvm-$DATE-r$REV-src
+SRC_DIR=/pds/opt/install/llvm/llvm-$DATE-r$REV-src
 INSTALL_DIR=/pds/opt/llvm-$DATE-r$REV
-BUILD_DIR=/pds/opt/llvm-$DATE-r$REV-build
+BUILD_DIR=/pds/opt/install/llvm/llvm-$DATE-r$REV-build
 
 # Get LLVM + Clang
 # Get LLVM
@@ -25,6 +25,6 @@ cd $BUILD_DIR
 echo "Configuring LLVM..."
 CC=gcc CXX=g++ $SRC_DIR/configure --prefix=$INSTALL_DIR --enable-optimized --with-python
 echo "Building LLVM..."
-make && make install
+make -j 8 && make install
 echo
-echo "Installation finished. Please remove build dir '$BUILD_DIR'."
+echo "Installation finished. Please remove build dir '$BUILD_DIR' and source dir '$SRC_DIR'."

@@ -1,0 +1,42 @@
+# Determine revision, date, directories
+REV=$(svn info http://llvm.org/svn/llvm-project/llvm/trunk | grep ^Revision: | awk '{print $2}')
+DATE=$(date "+%Y%m%d")
+SRC_DIR=/pds/opt/install/llvm/llvm-$DATE-r$REV-src
+INSTALL_DIR=/pds/opt/llvm-$DATE-r$REV
+BUILD_DIR=/pds/opt/install/llvm/llvm-$DATE-r$REV-build
+
+# Get LLVM + Clang + libc++ + libc++abi + libomp
+# Get LLVM
+echo "Getting LLVM at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/llvm/trunk $SRC_DIR
+# Get clang
+echo "Getting Clang at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/cfe/trunk $SRC_DIR/tools/clang
+# Get extra clang tools
+echo "Getting Clang extra tools at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/clang-tools-extra/trunk $SRC_DIR/tools/clang/tools/extra
+# Get compiler-rt
+echo "Getting compiler-rt at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/compiler-rt/trunk $SRC_DIR/projects/compiler-rt
+# Get libc++
+echo "Getting libc++ at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/libcxx/trunk $SRC_DIR/projects/libcxx
+# Get libc++abi
+echo "Getting libc++abi at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/libcxxabi/trunk $SRC_DIR/projects/libcxxabi
+# Get openmp runtime library
+echo "Getting libomp at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/openmp/trunk $SRC_DIR/projects/openmp
+
+# Build & install LLVM + Clang
+mkdir -p $BUILD_DIR
+cd $BUILD_DIR
+echo "Configuring LLVM..."
+cmake $SRC_DIR -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_ENABLE_ASSERTIONS=On \
+    -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
+    -DCLANG_DEFAULT_OPENMP_RUNTIME=libomp
+echo "Building LLVM..."
+make -j 8 && make install
+echo
+echo "Installation finished. Please remove build dir '$BUILD_DIR'."

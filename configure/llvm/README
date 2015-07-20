@@ -1,0 +1,6 @@
+Use *stage1 to build clang on a system that does not have clang yet, use
+*stage2 to build (and install) clang with libc++, libc++abi and libomp built
+in-tree.
+
+Note: do *not* delete the LLVM src dir as it contains useful tools that are not
+      installed with 'make install'.
