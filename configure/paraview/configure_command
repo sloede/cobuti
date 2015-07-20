@@ -1,9 +1,5 @@
 #!/bin/bash
 
-PYTHON27=$pool/python-2.7.6
-MESA=$pool/mesa/20150415-3cbefe3
-GLU=$pool/glu/9.0.0
-
 if [ -z "$1" ]; then
   PV_SRC=$src/ParaView
 else
@@ -43,16 +39,14 @@ if [ $USE_MESA -eq 1 ]; then
     -DPARAVIEW_ENABLE_PYTHON:BOOL=ON \
     -DPARAVIEW_INSTALL_DEVELOPMENT_FILES:BOOL=ON \
     -DPARAVIEW_USE_MPI:BOOL=ON \
-    -DPYTHON_LIBRARY:FILEPATH=$PYTHON27/lib/libpython2.7.so \
-    -DPYTHON_INCLUDE_DIR:PATH=$PYTHON27/include/python2.7 \
     -DPARAVIEW_BUILD_QT_GUI:BOOL=OFF \
     -DVTK_USE_X:BOOL=OFF \
-    -DOPENGL_INCLUDE_DIR:PATH=$MESA/include \
-    -DOPENGL_gl_LIBRARY:FILEPATH=$MESA/lib/libOSMesa.so \
-    -DOPENGL_glu_LIBRARY:FILEPATH=$GLU/lib/libGLU.so \
+    -DOPENGL_INCLUDE_DIR:PATH=/usr/include \
+    -DOPENGL_gl_LIBRARY:FILEPATH=/usr/lib64/libOSMesa.so \
+    -DOPENGL_glu_LIBRARY:FILEPATH=/usr/lib64/libGLU.so \
     -DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
-    -DOSMESA_INCLUDE_DIR:PATH=$MESA/include \
-    -DOSMESA_LIBRARY:FILEPATH=$MESA/lib/libOSMesa.so
+    -DOSMESA_INCLUDE_DIR:PATH=/usr/include \
+    -DOSMESA_LIBRARY:FILEPATH=/usr/lib64/libOSMesa.so
 else
   set -x
   CC=gcc CXX=g++ cmake $PV_SRC \
@@ -62,7 +56,5 @@ else
     -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
     -DPARAVIEW_ENABLE_PYTHON:BOOL=ON \
     -DPARAVIEW_INSTALL_DEVELOPMENT_FILES:BOOL=ON \
-    -DPARAVIEW_USE_MPI:BOOL=ON \
-    -DPYTHON_LIBRARY:FILEPATH=$PYTHON27/lib/libpython2.7.so \
-    -DPYTHON_INCLUDE_DIR:PATH=$PYTHON27/include/python2.7
+    -DPARAVIEW_USE_MPI:BOOL=ON
 fi
