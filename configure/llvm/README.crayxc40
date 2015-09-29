@@ -1,0 +1,22 @@
+The following steps were needed to install the 2nd stage of LLVM on the Cray XC
+40 "Hazel Hen":
+
+- Download & install GCC 5.2.0 using the system GNU compiler (gcc 4.3.4)
+- Install stage 1 LLVM using the newly installed GNU compiler with
+
+    CC=/path/to/gcc52/bin/gcc CXX=/path/to/gcc52/bin/g++ LDFLAGS="-Wl,-rpath,/path/to/gcc52/lib64" ...
+
+- Install stage 2 LLVM using the stage 1 as CMAKE_C_COMPILER and
+  CMAKE_CXX_COMPILER (first load correct svn module)
+- During stage 2 installation, there is an error in one of the system headers
+  (vt.h). Fixed by changing
+
+    #include <sys/vt.h>
+
+  to
+
+    #define new renamed_new
+    #include <sys/vt.h>
+    #undef new
+
+  in .../compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.cc
