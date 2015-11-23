@@ -1,0 +1,4 @@
+To compile libcxx with support for Clang's memory sanitizer, add the following
+flag to the configure command:
+
+    -DLLVM_USE_SANITIZER=MemoryWithOrigins
