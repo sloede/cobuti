@@ -1,0 +1,6 @@
+After installation, add the following lines to
+PREFIX/etc/openmpi-mca-params.conf to re-enable oversubscription:
+
+# Re-enable oversubscription (which was the default in OpenMPI 1.6, but which
+# was disabled by default starting in 1.7)
+rmaps_base_oversubscribe = 1
