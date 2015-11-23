@@ -1,4 +1,4 @@
 CC=clang CXX=clang++ \
-CFLAGS="-fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins" \
-CXXFLAGS="-fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins" \
+CFLAGS="-g -fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins" \
+CXXFLAGS="-g -fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins" \
 $src/fftw-3.3.4/configure --prefix=$pool/fftw/3.3.4_clang_msan
