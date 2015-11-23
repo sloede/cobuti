@@ -1,0 +1,4 @@
+CC=clang CXX=clang++ \
+CFLAGS="-g -fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins" \
+CXXFLAGS="-g -fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins" \
+../parallel-netcdf-1.6.1/configure --prefix=/pds/opt/parallel-netcdf-1.6.1-clang-msan --with-mpi=/pds/opt/openmpi-1.8.7-clang-msan --disable-fortran
