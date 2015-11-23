@@ -1,23 +1,30 @@
 # Determine revision, date, directories
-REV=$(svn info http://llvm.org/svn/llvm-project/libcxx/trunk | grep ^Revision: | awk '{print $2}')
+REV=$(svn info http://llvm.org/svn/llvm-project/llvm/trunk | grep ^Revision: | awk '{print $2}')
 DATE=$(date "+%Y%m%d")
-SRC_DIR=/pds/opt/libcxx-$DATE-r$REV-src
+SRC_DIR=/pds/opt/install/llvm/libcxx-$DATE-r$REV-src
 INSTALL_DIR=/pds/opt/libcxx-$DATE-r$REV
-BUILD_DIR=/pds/opt/libcxx-$DATE-r$REV-build
+BUILD_DIR=/pds/opt/install/llvm/libcxx-$DATE-r$REV-build
 
-# Get libcxx
-echo "Getting libcxx at revision $REV..."
-svn co -r $REV http://llvm.org/svn/llvm-project/libcxx/trunk $SRC_DIR
+# Get LLVM + libc++ + libc++abi
+# Get LLVM
+echo "Getting LLVM at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/llvm/trunk $SRC_DIR
+# Get clang
+# Get libc++
+echo "Getting libc++ at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/libcxx/trunk $SRC_DIR/projects/libcxx
+# Get libc++abi
+echo "Getting libc++abi at revision $REV..."
+svn co -r $REV http://llvm.org/svn/llvm-project/libcxxabi/trunk $SRC_DIR/projects/libcxxabi
 
-# Build & install libcxx (clang/clang++ must be on the PATH for this to work)
+# Build & install libc++ + libcxx++abi
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
-echo "Configuring libcxx..."
-CC=clang CXX=g++ cmake $SRC_DIR -G "Unix Makefiles" \
-   -DLIBCXX_CXX_ABI=libstdc++ \
-   -DLIBCXX_CXX_ABI_INCLUDE_PATHS="/usr/include/c++/4.8;/usr/include/c++/4.8/x86_64-suse-linux" \
-   -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR
-echo "Building libcxx..."
-make && make install
+echo "Configuring LLVM..."
+cmake $SRC_DIR -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_ENABLE_ASSERTIONS=On \
+    -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+echo "Building LLVM..."
+make -j 8 cxx cxxabi && make install-libcxx install-libcxxabi
 echo
 echo "Installation finished. Please remove build dir '$BUILD_DIR' and source dir '$SRC_DIR'."
