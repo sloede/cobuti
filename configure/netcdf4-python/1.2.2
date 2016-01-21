@@ -4,5 +4,5 @@
 # HDF5_dir = /pds/opt/hdf5
 
 CPPFLAGS="-I/pds/opt/openmpi/include" \
-LDFLAGS="-L/pds/opt/netcdf-4.4.0/lib64 -lnetcdf -Wl,-rpath,/pds/opt/netcdf-4.4.0/lib64 -Wl,-rpath,/pds/opt/openmpi/lib64 -Wl,-rpath,/pds/opt/hdf5/lib64" \
+LDFLAGS="-L/pds/opt/netcdf-4.4.0/lib64 -lnetcdf -Wl,-rpath,/pds/opt/netcdf-4.4.0/lib64 -Wl,-rpath,/pds/opt/openmpi/lib64 -L/pds/opt/hdf5/lib64 -Wl,-rpath,/pds/opt/hdf5/lib64" \
 python setup.py build && python setup.py install --prefix=$pool/netCDF4-1.2.2
