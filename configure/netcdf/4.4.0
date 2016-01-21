@@ -1,0 +1,1 @@
+CPPFLAGS="-I/pds/opt/hdf5/include -I/pds/opt/openmpi/include" LDFLAGS="-L/pds/opt/hdf5/lib64 -Wl,-rpath,/pds/opt/hdf5/lib64" ../netcdf-c-4.4.0/configure --prefix=/pds/opt/netcdf-4.4.0 --enable-shared
