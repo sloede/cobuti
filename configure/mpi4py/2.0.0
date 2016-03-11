@@ -1,0 +1,13 @@
+# Open mpi.cfg and change the [openmpi] section:
+[openmpi]
+mpi_dir              = /pds/opt/openmpi
+mpicc                = %(mpi_dir)s/bin/mpicc
+mpicxx               = %(mpi_dir)s/bin/mpicxx
+include_dirs         = %(mpi_dir)s/include
+libraries            = mpi
+library_dirs         = %(mpi_dir)s/lib64
+runtime_library_dirs = %(library_dirs)s
+
+# Build & install
+python3 setup.py build --mpi=openmpi
+python3 setup.py install --prefix=/pds/opt/mpi4py-2.0.0
