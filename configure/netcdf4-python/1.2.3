@@ -1,13 +1,13 @@
 # First modify setup.cfg and set the following:
 # use_ncconfig = False
-# netCDF4_incdir = /pds/opt/netcdf-4.4.0/include
-# netCDF4_libdir = /pds/opt/netcdf-4.4.0/lib64
+# netCDF4_incdir = /pds/opt/netcdf/include
+# netCDF4_libdir = /pds/opt/netcdf/lib64
 # HDF5_incdir = /pds/opt/hdf5/include
 # HDF5_libdir = /pds/opt/hdf5/lib64
 
-# Alternatively, you can also use python3
+# Alternatively, you can also use python
 CPPFLAGS="-I/pds/opt/openmpi/include" \
 LDFLAGS="-Wl,-rpath,/pds/opt/openmpi/lib64" \
-python setup.py build
+python3 setup.py build
 
-python setup.py install --prefix=/pds/opt/netcdf4-python-1.2.2
+python3 setup.py install --prefix=/pds/opt/netcdf4-python-1.2.3
