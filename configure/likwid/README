@@ -1,0 +1,5 @@
+Enter the unpacked source directory and edit config.mk. Change the value for
+`PREFIX` to the installation path and make sure that `ACCESSMODE` is set to
+`accessdaemon`. Then execute `make` to build likwid, afterwards `sudo make
+install` to install it. Root privileges are required for the installation step,
+as the access daemon needs to be owned by root and have the setuid bit set.
