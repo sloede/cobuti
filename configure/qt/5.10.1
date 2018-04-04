@@ -1,0 +1,14 @@
+../qt-everywhere-src-5.10.1/configure \
+  -opensource \
+  -confirm-license \
+  -prefix /pds/opt/qt-5.10.1 \
+  -rpath \
+  -nomake tests -nomake examples \
+  QMAKE_CC=/pds/opt/gcc-7/bin/gcc \
+  QMAKE_CXX=/pds/opt/gcc-7/bin/g++ \
+  QMAKE_LFLAGS+="-Wl,-rpath,/pds/opt/gcc-7/lib64" \
+  QMAKE_LINK_C=/pds/opt/gcc-7/bin/gcc \
+  QMAKE_LINK=/pds/opt/gcc-7/bin/g++
+
+# Followed by
+# make -j 6 && make install && make docs && make install_docs
