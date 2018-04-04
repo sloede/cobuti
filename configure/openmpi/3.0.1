@@ -1,0 +1,2 @@
+GCC=/pds/opt/gcc-7
+CC=$GCC/bin/gcc CXX=$GCC/bin/g++ FC=$GCC/bin/gfortran LDFLAGS="-Wl,-rpath,$GCC/lib64" ../openmpi-3.0.1/configure --enable-mpi-fortran --prefix=/pds/opt/openmpi-3.0.1
