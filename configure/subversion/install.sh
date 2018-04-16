@@ -13,7 +13,7 @@ PREFIX=/pds/opt/subversion-$SVN_VERSION-testing
 # Set file/directory names
 SVN=subversion-$SVN_VERSION
 APR=apr-$APR_VERSION
-APR_UTIL=apr-util-$APR_VERSION
+APR_UTIL=apr-util-$APR_UTIL_VERSION
 SERF=serf-$SERF_VERSION
 SCONS_LOCAL=scons-local-$SCONS_LOCAL_VERSION
 
@@ -29,10 +29,10 @@ BASEDIR=$(pwd)/temp-install-$SVN
 BUILDDIR_BASE=$BASEDIR/build
 
 # Set log file
-LOG=$BASEDIR/build.log
+LOG=$BASEDIR/install.log
 
 # Set download command
-DOWNLOAD="wget -q -nc"
+DOWNLOAD="wget -nc"
 
 # Auxiliary exit command in case of errors
 die() {
@@ -195,7 +195,7 @@ echo
 
 # Install overview
 echo "The following packages have been installed to $PREFIX:"
-[ $INSTALL_APR -eq 1 ] && echo " * $APR"
-[ $INSTALL_APR_UTIL -eq 1 ] && echo " * $APR_UTIL"
-[ $INSTALL_SERF -eq 1 ] && echo " * $SERF"
-[ $INSTALL_SVN -eq 1 ] && echo " * $SVN"
+[ $INSTALLED_APR -eq 1 ] && echo " * $APR"
+[ $INSTALLED_APR_UTIL -eq 1 ] && echo " * $APR_UTIL"
+[ $INSTALLED_SERF -eq 1 ] && echo " * $SERF"
+[ $INSTALLED_SVN -eq 1 ] && echo " * $SVN"
