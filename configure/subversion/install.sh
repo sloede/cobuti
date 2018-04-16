@@ -68,6 +68,7 @@ INSTALLED_APR=1
 INSTALLED_APR_UTIL=0
 install_apr_util() {
 BUILDDIR=$BUILDDIR_BASE.$APR_UTIL
+echo "Installing $APR_UTIL..."
 cd $BASEDIR
 echo " * downloading..."
 test -f $APR_UTIL.tar.bz2 || $DOWNLOAD $APR_UTIL_LINK >>$LOG 2>&1 || die "downloading $APR_UTIL failed"
@@ -92,6 +93,7 @@ INSTALLED_APR_UTIL=1
 # Install SERF
 INSTALLED_SERF=0
 install_serf() {
+echo "Installing $SERF..."
 cd $BASEDIR
 echo " * downloading..."
 test -f $SERF.tar.bz2 || $DOWNLOAD $SERF_LINK >>$LOG 2>&1 || die "configuring $SERF failed"
@@ -99,7 +101,7 @@ echo " * unpacking..."
 test -d $SERF && rm -rf $SERF
 tar xf $SERF.tar.bz2 >>$LOG 2>&1 || die "unpacking $SERF failed"
 cd $SERF
-echo " * setting up $SCONS..."
+echo " * setting up $SCONS_LOCAL..."
 $DOWNLOAD $SCONS_LOCAL_LINK >>$LOG 2>&1 || die "setting up $SCONS failed"
 tar xf $SCONS_LOCAL.tar.gz >>$LOG 2>&1 || die "setting up $SCONS failed"
 ln -s scons.py scons
@@ -117,6 +119,7 @@ INSTALLED_SERF=1
 # Install SVN
 INSTALLED_SVN=0
 install_svn() {
+echo "Installing $SVN..."
 BUILDDIR=$BUILDDIR_BASE.$SVN
 cd $BASEDIR
 echo " * downloading..."
